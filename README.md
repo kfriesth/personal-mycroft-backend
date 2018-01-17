@@ -11,7 +11,7 @@ you can run it, but why would you before it's finished?
 # usage
 
 
-wait until it is finished
+wait until it is finished and for PR#[1365](https://github.com/MycroftAI/mycroft-core/pull/1365)
 
 
 configure backend by editing settings.py
@@ -107,6 +107,8 @@ quickly pair a device by
 - wolfram alpha api
 
 - weather api
+
+- pairing skill PR to read backend url from config instead of hardcoding mycroft.home.ai
 
 - everything else i forgot
 
