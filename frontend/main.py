@@ -170,4 +170,4 @@ def pair():
 def devices():
     devices = utils.get_devices()
     device = devices[0]
-    return render_template('devices.html', device=device)
+    return render_template('devices.html', devices=devices)
