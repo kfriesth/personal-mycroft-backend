@@ -159,5 +159,15 @@ def pair():
             if utils.pair(code):
                 status = "Paired"
         return json.dumps({'status': status})
-    return render_template('devices.html', form=form)
+    return render_template('pairing.html', form=form)
 
+
+@app.route('/devices', methods=['GET', 'POST'])
+@noindex
+@donation
+@requires_auth
+@check_confirmed
+def devices():
+    devices = utils.get_devices()
+    device = devices[0]
+    return render_template('devices.html', device=device)

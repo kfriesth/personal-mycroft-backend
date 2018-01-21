@@ -41,10 +41,10 @@ def get_user():
         return user
 
 
-def get_device():
-    username = session['username']
-    # TODO
-    return None
+def get_devices():
+    user = get_user()
+    devices = DEVICES.get_device_by_mail(user.mail)
+    return devices
 
 
 def add_user(username, password, email):

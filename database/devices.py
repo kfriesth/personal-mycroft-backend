@@ -419,6 +419,11 @@ class DeviceDatabase(object):
                                                  token).first()
         return device
 
+    def get_device_by_mail(self, mail):
+        device = self.session.query(Device).filter(User.mail ==
+                                                   mail).all()
+        return device
+
     def add_location(self, uuid, location_data=None):
         device = self.get_device_by_uuid(uuid)
         if device is None:

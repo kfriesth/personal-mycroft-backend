@@ -1,42 +1,68 @@
 {% extends "navbar.html" %}
 {% block content %}
-<title>Personal Mycroft Backend</title>
-<section class="hero is-primary is-bold is-small">
-  <div class="hero-body">
-    <div class="container has-text-centered">
-      <div id="devices" class="devices-box">
-        <div class="devices-area">
-          <h1 class="title">Pair a device</h1>
-          <div class="field">
-            <p class="control has-icons-left">
-
-              <input id="devices-name" class="input is-success" type="text"
-                     placeholder="name your device">
-              <span class="icon is-small is-left">
-                <i class="fa fa-laptop"></i>
-              </span>
-            </p>
+<section class="hero is-primary is-bold is-large">
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <h1 class="title">Your Devices</h1>
+          <div id="devices-area" class="devices-box">
+            <div class="columns">
+              <div class="column is-auto">
+                <div class="field">
+                  <p class="control has-icons-left">
+                    <input id="devices-name" class="input is-success"
+                           type="text" placeholder="{{device.name}}">
+                    <span class="icon is-small is-left">
+                      <i class="fa fa-laptop"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="field">
+                  <p class="control has-icons-left">
+                    <input id="devices-uuid" class="input is-success"
+                           type="text" placeholder="{{device.uuid}}" readonly="readonly">
+                    <span class="icon is-small is-left">
+                      <i class="fa fa-id-card"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="field">
+                  <p class="control has-icons-left">
+                    <input id="devices-core_version" class="input is-success"
+                           type="text" placeholder="core_version"
+                           readonly="readonly">
+                    <span class="icon is-small is-left">
+                      <i class="fa fa-info"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="field">
+                  <p class="control has-icons-left">
+                    <input id="devices-enclosure_version"
+                           class="input is-success"
+                           type="text"
+                           placeholder="enclosure_version"
+                           readonly="readonly">
+                    <span class="icon is-small is-left">
+                      <i class="fa fa-info-circle"></i>
+                    </span>
+                  </p>
+                </div>
+                <br>
+                <a id="save" class="form-button button is-primary is-inverted is-outlined">
+                  <span>Save</span>
+                </a>
+                <br>
+                <br>
+                <a id="config"
+                   class="form-button button is-primary is-inverted is-outlined">
+                  <span>Edit Configuration</span>
+                </a>
+                <br>
+                <i><a id="feedback" class="feedback"></a></i>
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <p class="control has-icons-left">
-              <input id="devices-code" class="input is-success" type="text"
-                     placeholder="PAIRING_CODE">
-              <span class="icon is-small is-left">
-                <i class="fa fa-id-card"></i>
-              </span>
-            </p>
-          </div>
-          <br>
-          <a id="pair"
-             class="form-button button is-primary is-inverted is-outlined">
-            <span>Pair</span>
-          </a>
-          <br>
-          <br>
-          <i><a id="feedback" class="feedback"></a></i>
         </div>
-      </div>    
-    </div>
-  </div>
+      </div>
 </section>
 {% endblock %}

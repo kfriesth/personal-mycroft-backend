@@ -47,7 +47,7 @@ def setting(uuid=""):
         result = model_to_dict(device.config)
 
         # format result
-        cleans = ["skills_dir", "skills_auto_update"]
+        cleans = ["skills_dir", "skills_auto_update", "device_id", "id"]
 
         blacklisted = [skill.folder for skill in device.config.skills if
                        skill.blacklisted]
@@ -142,6 +142,7 @@ def get_uuid(uuid):
     if device is not None:
         if request.method == 'PATCH':
             result = request.json
+            print result
             DEVICES.add_device(uuid=uuid, name=result.get("name"),
                                expires_at=result.get("expires_at"),
                                accessToken=result.get("accessToken"),
