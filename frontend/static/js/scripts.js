@@ -56,6 +56,19 @@ $(document).ready(function() {
     })
   })
 
+  $(document).on("click", "#devices-save", function() {
+    $.post({
+      type: "POST",
+      url: "/devices",
+      data: {"name": $("#devices-name").val(),
+             "uuid": $("#devices-uuid").val(),
+      success: function(response){
+        message(JSON.parse(response)['status'])
+      }
+    })
+  })
+
+
   $(document).on("click", "#pair", function() {
     $.post({
       type: "POST",

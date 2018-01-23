@@ -46,7 +46,9 @@ def setting(uuid=""):
     if device is not None:
         result = model_to_dict(device.config)
 
-        # format result
+        # format results
+
+        # skills
         cleans = ["skills_dir", "skills_auto_update", "device_id", "id"]
 
         blacklisted = [skill.folder for skill in device.config.skills if
@@ -59,6 +61,17 @@ def setting(uuid=""):
                             "blacklisted_skills": blacklisted,
                             "priority_skills": priority}
 
+        # location
+        location = device.location
+        result["location"] = location_dict(location.city,
+                                           location.region_code,
+                                           location.country_code,
+                                           location.country_name,
+                                           location.region,
+                                           location.longitude,
+                                           location.latitude,
+                                           location.timezone)
+        # listener
         cleans += ["listener_energy_ratio", "record_wake_words",
                    "record_utterances", "wake_word_upload", "stand_up_word",
                    "wake_word", "listener_sample_rate", "listener_channels",
@@ -77,10 +90,12 @@ def setting(uuid=""):
             "stand_up_word": result["stand_up_word"]
         }
 
+        # sounds
         result["sounds"] = {}
         for sound in device.config.sounds:
             result["sounds"][sound.name] = sound.path
 
+        # hotwords
         result["hotwords"] = {}
         for word in device.config.hotwords:
             result["hotwords"][word.name] = {
@@ -93,6 +108,8 @@ def setting(uuid=""):
                 "utterance": word.utterance,
                 "sound": word.sound
             }
+
+        # stt
         stt = device.config.stt
         creds = {}
         if stt.engine_type == "token":
@@ -109,6 +126,7 @@ def setting(uuid=""):
                                     "credential": creds}
                          }
 
+        # tts
         tts = device.config.tts
         result["tts"] = {"module": tts.name,
                          tts.name: {"token": tts.token,
@@ -143,10 +161,10 @@ def get_uuid(uuid):
         if request.method == 'PATCH':
             result = request.json
             print result
-            DEVICES.add_device(uuid=uuid, name=result.get("name"),
-                               expires_at=result.get("expires_at"),
-                               accessToken=result.get("accessToken"),
-                               refreshToken=result.get("refreshToken"))
+            DEVICES.patch_device(uuid=uuid, coreVersion=result.get("coreVersion"),
+                                 platform=result.get("platform"),
+                                 platform_build=result.get("platform_build"),
+                                 enclosureVersion=result.get("enclosureVersion"))
 
         result = model_to_dict(device)
     else:

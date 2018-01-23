@@ -156,7 +156,8 @@ def pair():
         status = "NOT Paired"
         if form.validate():
             code = request.form['code']
-            if utils.pair(code):
+            name = request.form['name']
+            if utils.pair(code, name):
                 status = "Paired"
         return json.dumps({'status': status})
     return render_template('pairing.html', form=form)
@@ -169,5 +170,4 @@ def pair():
 @check_confirmed
 def devices():
     devices = utils.get_devices()
-    device = devices[0]
     return render_template('devices.html', devices=devices)

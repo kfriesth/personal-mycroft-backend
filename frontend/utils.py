@@ -43,7 +43,7 @@ def get_user():
 
 def get_devices():
     user = get_user()
-    devices = DEVICES.get_device_by_mail(user.mail)
+    devices = DEVICES.get_devices_by_mail(user.mail)
     return devices
 
 
@@ -106,11 +106,11 @@ def generate_confirmation_token(email):
     return serializer.dumps(email, salt=SECURITY_PASSWORD_SALT)
 
 
-def pair(code):
+def pair(code, name="unknown_device"):
     device = DEVICES.get_unpaired_by_code(code)
     if device:
         user = get_user()
-        if DEVICES.add_device(uuid=device.uuid, mail=user.mail):
+        if DEVICES.add_device(uuid=device.uuid, name=name, mail=user.mail):
             DEVICES.remove_unpaired(device.uuid)
             msg = Message("Device was paired",
                           recipients=[user.mail])

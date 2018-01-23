@@ -164,6 +164,10 @@ class Device(Base):
     paired = Column(Boolean, default=False)
     subscription = Column(String, default="free")
     arch = Column(String, default="unknown")
+    coreVersion = Column(String, default="unknown")
+    platform = Column(String, default="unknown")
+    platform_build = Column(String, default="unknown")
+    enclosureVersion = Column(String, default="unknown")
 
     user_id = Column(Integer, ForeignKey("users.id"))
 
@@ -171,7 +175,7 @@ class Device(Base):
                         secondary=user_devices, uselist=False)
 
     config = relationship("Configuration", back_populates="device",
-                           secondary=config_devices, uselist=False)
+                          secondary=config_devices, uselist=False)
 
     ips = relationship("IPAddress", # order_by="ips.last_seen",
                        back_populates="devices",
@@ -377,9 +381,9 @@ class TTS(Base):
     password = Column(String, default="")
     client_key = Column(String, default="")
     client_id = Column(String, default="")
-    voice = Column(String, default="")
+    voice = Column(String, default="ap")
     gender = Column(String, default="male")
-    api_key = Column(String)
+    api_key = Column(String, default="")
 
     config = relationship("Configuration", back_populates="tts",
                           secondary=config_tts, uselist=False)
@@ -419,7 +423,7 @@ class DeviceDatabase(object):
                                                  token).first()
         return device
 
-    def get_device_by_mail(self, mail):
+    def get_devices_by_mail(self, mail):
         device = self.session.query(Device).filter(User.mail ==
                                                    mail).all()
         return device
@@ -501,6 +505,38 @@ class DeviceDatabase(object):
     def get_unpaired_by_uuid(self, uuid):
         return self.session.query(UnpairedDevice).filter(
             UnpairedDevice.uuid == uuid).first()
+
+    def patch_device(self, uuid, coreVersion="unknown", platform="unknown",
+                     platform_build="unknown", enclosureVersion="unknown"):
+        device = self.get_device_by_uuid(uuid)
+        if device:
+            device.coreVersion = coreVersion
+            device.platform = platform
+            device.platform_build = platform_build
+            device.enclosureVersion = enclosureVersion
+        return self.commit()
+
+    def remove_user(self, mail):
+        user = self.get_user_by_mail(mail)
+        if user:
+            self.session.delete(user)
+            return self.commit()
+        return False
+
+    def remove_device(self, uuid):
+        device = self.get_device_by_uuid(uuid)
+        if device:
+            self.session.delete(device)
+            return self.commit()
+        return False
+
+    def remove_devices_by_mail(self, mail):
+        devices = self.get_devices_by_mail(mail)
+        if len(devices):
+            for device in devices:
+                self.session.delete(device)
+            return self.commit()
+        return False
 
     def remove_unpaired(self, uuid):
         device = self.get_unpaired_by_uuid(uuid)
@@ -606,3 +642,5 @@ class DeviceDatabase(object):
         except IntegrityError:
             self.session.rollback()
         return False
+
+

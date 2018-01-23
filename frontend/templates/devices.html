@@ -4,65 +4,66 @@
       <div class="hero-body">
         <div class="container has-text-centered">
           <h1 class="title">Your Devices</h1>
-          <div id="devices-area" class="devices-box">
-            {% for device in devices %}
-              <div class="columns">
-                <div class="column is-auto">
-                  <div class="field">
-                    <p class="control has-icons-left">
-                      <input id="devices-name" class="input is-success"
-                             type="text" placeholder="{{device.name}}">
-                      <span class="icon is-small is-left">
-                        <i class="fa fa-laptop"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="field">
-                    <p class="control has-icons-left">
-                      <input id="devices-uuid" class="input is-success"
-                             type="text" placeholder="{{device.uuid}}" readonly="readonly">
-                      <span class="icon is-small is-left">
-                        <i class="fa fa-id-card"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="field">
-                    <p class="control has-icons-left">
-                      <input id="devices-core_version" class="input is-success"
-                             type="text" placeholder="core_version"
-                             readonly="readonly">
-                      <span class="icon is-small is-left">
-                        <i class="fa fa-info"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="field">
-                    <p class="control has-icons-left">
-                      <input id="devices-enclosure_version"
-                             class="input is-success"
-                             type="text"
-                             placeholder="enclosure_version"
-                             readonly="readonly">
-                      <span class="icon is-small is-left">
-                        <i class="fa fa-info-circle"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <br>
-                  <a id="save" class="form-button button is-primary is-inverted is-outlined">
-                    <span>Save</span>
-                  </a>
-                  <br>
-                  <br>
-                  <a id="config"
-                     class="form-button button is-primary is-inverted is-outlined">
-                    <span>Edit Configuration</span>
-                  </a>
-                  </div>
-                </div>
-              {% endfor %}
-              <br>
-              <i><a id="feedback" class="feedback"></a></i>
+          <br>
+          <i><a id="feedback" class="feedback"></a></i>
+          <br>
+          <div class="container has-text-centered">
+            <div class="columns">
+              <div id="devices-area" class="devices-box">
+                {% for device in devices %}
+                    <div class="column is-auto">
+                      <div class="field">
+                        <p class="control has-icons-left">
+                          <input id="devices-name" class="input is-success"
+                                 type="text" placeholder="{{device.name}}">
+                          <span class="icon is-small is-left">
+                            <i class="fa fa-laptop"></i>
+                          </span>
+                        </p>
+                      </div>
+                      <div class="field">
+                        <p class="control has-icons-left">
+                          <input id="devices-uuid" class="input is-success"
+                                 type="text" placeholder="{{device.uuid}}" readonly="readonly">
+                          <span class="icon is-small is-left">
+                            <i class="fa fa-id-card"></i>
+                          </span>
+                        </p>
+                      </div>
+                      <div class="field">
+                        <p class="control has-icons-left">
+                          <input id="devices-core_version" class="input is-success"
+                                 type="text" placeholder="{{device.coreVersion}}"
+                                 readonly="readonly">
+                          <span class="icon is-small is-left">
+                            <i class="fa fa-info"></i>
+                          </span>
+                        </p>
+                      </div>
+                      <div class="field">
+                        <p class="control has-icons-left">
+                          <input id="devices-enclosure_version"
+                                 class="input is-success"
+                                 type="text"
+                                 placeholder="{{device.enclosureVersion}}"
+                                 readonly="readonly">
+                          <span class="icon is-small is-left">
+                            <i class="fa fa-info-circle"></i>
+                          </span>
+                        </p>
+                      </div>
+                      <a id="devices-save"
+                         class="form-button button is-primary is-inverted is-outlined">
+                        <span>Save</span>
+                      </a>
+                      <a href="/{{device.uuid}}/config"
+                         class="form-button button is-primary is-inverted is-outlined">
+                        <span>Config</span>
+                      </a>
+                    </div>
+                {% endfor %}
+              </div>
+            </div>
           </div>
         </div>
       </div>

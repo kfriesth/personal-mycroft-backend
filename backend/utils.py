@@ -7,6 +7,7 @@ import pygeoip
 import json
 from os import makedirs, urandom
 from os.path import exists, join, dirname
+from netifaces import interfaces, ifaddresses, AF_INET
 
 
 def gen_api(user="demo_user", save=False):
@@ -75,15 +76,32 @@ def nice_json(arg):
     return response
 
 
+def _get_ip_address():
+    addr = {}
+    for ifaceName in interfaces():
+        addresses = [
+            i['addr'] for i in
+            ifaddresses(ifaceName).setdefault(
+                AF_INET, [{'addr': None}])]
+        if None in addresses:
+            addresses.remove(None)
+        # ignore "lo" (the local loopback)
+        if addresses and ifaceName != "lo":
+            addr[ifaceName] = addresses[0]
+    for key in addr:
+        if "eth" in key:
+            return addr[key]
+    for key in addr:
+        if "wlan" in key:
+            return addr[key]
+    return None
+
+
 def geo_locate(ip):
     if ip in ["0.0.0.0", "127.0.0.1"]:
-        response = requests.get("https://ipapi.co/json/")
-        data = response.json()
-    else:
-        g = pygeoip.GeoIP(join(root_dir(), 'database',
-                                       'GeoLiteCity.dat'))
-        data = g.record_by_addr(ip) or {}
-
+        ip = _get_ip_address()
+    g = pygeoip.GeoIP(join(root_dir(), 'database', 'GeoLiteCity.dat'))
+    data = g.record_by_addr(ip) or {}
     return data
 
 
@@ -105,3 +123,4 @@ def location_dict(city="", region_code="", country_code="",
     return {"city": city_data,
                           "coordinate": coordinate_data,
                           "timezone": timezone_data}
+
